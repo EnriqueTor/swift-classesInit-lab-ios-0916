@@ -20,8 +20,22 @@ import Foundation
 
 
 
-
-
+class Person {
+    
+    var firstName: String = ""
+    var lastName: String = ""
+//    var fullName = "\(person.firstName) \(person.lastName)"
+    var fullName: String { return "\(person.firstName) \(person.lastName)"}
+    
+    init(firstName: String, lastName: String) {
+        self.firstName = firstName
+        self.lastName = lastName
+    }
+    
+    func greet(_ person:Person) -> String {
+        return "Hello, \(person.firstName)!"
+    }
+}
 
 
 // Test
@@ -37,7 +51,6 @@ assert(person.lastName == "Johnson", person.lastName)
  
  You can add this property to the class definition you wrote in Question #1.
  */
-
 
 
 // Test
@@ -83,12 +96,27 @@ extension Double {
 
 // write your code here
 
-
-
-
-
-
-
+class Transaction {
+    
+    var type : String = ""
+    var amount : Double = 0.0
+    var description: String {
+        if type == "in" {
+            return "Transaction: credit in the amount of $\(amount.toMoney)"
+        }
+        else if type == "out" {
+            return "Transaction: debit in the amount of $\(amount.toMoney)"
+        }
+        else {
+            return "error"
+        }
+    }
+    
+    init(type: String, amount: Double) {
+        self.type = type
+        self.amount = amount
+    }
+}
 
 
 
@@ -122,6 +150,7 @@ assert(transaction2.amount == 1.2, "\(transaction2.amount)")
 assert(transaction1.description == "Transaction: credit in the amount of $10.00", transaction1.description)
 assert(transaction2.description == "Transaction: debit in the amount of $1.20", transaction2.description)
 
+
 /*: section6
  
  ## Question 6
@@ -134,10 +163,43 @@ assert(transaction2.description == "Transaction: debit in the amount of $1.20", 
  */
 // write your code here
 
+class BankAccount {
+    
+    var owner = person
+    var transactions : [Transaction] = []
+    var balance: Double {
+        get {
+            var total : Double = 0.0
+            for key in transactions {
+                if key.type == "in" {
+                    total += key.amount
+                }
+                if key.type == "out" {
+                    total -= key.amount
+                }
+            }
+            return total
+        }
+    }
+    
+    init(owner:Person) {
+        self.owner = owner
+    }
+    
+    func deposit(_ amount:Double) {
+        let transToDeposit = Transaction(type: "in", amount: amount)
+        transactions.append(transToDeposit)
+    }
+    
+    func withdraw(_ amount:Double) {
+        let transToDeposit = Transaction(type: "out", amount: amount)
+        transactions.append(transToDeposit)
+    }
 
+    
+}
 
-
-
+    
 
 
 
